@@ -16,34 +16,40 @@ with open(filename) as f:
         if c in ['<', '>', '+', '-', ',', '.', '[', ']']:
             code += c
 
-while code_pointer < len(code) and (c := code[code_pointer]):
-    if c == '<' and pointer > 0:
-        pointer -= 1
-    if c == '>':
-        pointer += 1
-        if pointer == len(cells): cells.append(0)
-    if c == '+':
-        cells[pointer] += 1
-        if cells[pointer] == 256: cells[pointer] = 0
-    if c == '-':
-        cells[pointer] -= 1
-        if cells[pointer] == -1: cells[pointer] = 255
-    if c == ',':
-        cells[pointer] = ord(input(': '))
-    if c == '.':
-        print(chr(cells[pointer]), end='')
-    
-    if c == '[' and cells[pointer] == 0:
-        unmatched_count = 1
-        while unmatched_count > 0:
-            code_pointer += 1
-            if code[code_pointer] == '[': unmatched_count += 1
-            if code[code_pointer] == ']': unmatched_count -= 1
-    if c == ']' and cells[pointer] != 0:
-        unmatched_count = 1
-        while unmatched_count > 0:
-            code_pointer -= 1
-            if code[code_pointer] == ']': unmatched_count += 1
-            if code[code_pointer] == '[': unmatched_count -= 1
-    
+def get_curr_command():
+    return code[code_pointer]
+
+while code_pointer < len(code):
+    match get_curr_command():
+        case '<':
+            if pointer > 0: pointer -= 1
+        case '>':
+            pointer += 1
+            if pointer == len(cells): cells.append(0)
+        case '+':
+            cells[pointer] += 1
+            if cells[pointer] == 256: cells[pointer] = 0
+        case '-':
+            cells[pointer] -= 1
+            if cells[pointer] == -1: cells[pointer] = 255
+        case ',':
+            cells[pointer] = ord(input(': '))
+        case '.':
+            print(chr(cells[pointer]), end='')
+        
+        case '[':
+            if cells[pointer] == 0:
+                unmatched_count = 1
+                while unmatched_count > 0:
+                    code_pointer += 1
+                    if get_curr_command() == '[': unmatched_count += 1
+                    if get_curr_command() == ']': unmatched_count -= 1
+        case ']':
+            if cells[pointer] != 0:
+                unmatched_count = 1
+                while unmatched_count > 0:
+                    code_pointer -= 1
+                    if get_curr_command() == ']': unmatched_count += 1
+                    if get_curr_command() == '[': unmatched_count -= 1
+        
     code_pointer += 1
