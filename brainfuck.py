@@ -24,7 +24,7 @@ while code_pointer < len(code) and (c := code[code_pointer]):
     if c == ',':
         cells[pointer] = ord(input(': '))
     if c == '.':
-        print(chr(cells[pointer]))
+        print(chr(cells[pointer]), end='')
     
     if c == '[' and cells[pointer] == 0:
         unmatched_count = 1
