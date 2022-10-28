@@ -1,10 +1,17 @@
+import sys
+
 cells = [0]
 pointer = 0
 code = ''
 code_pointer = 0
 
-file_name = input('File name: ')
-with open(file_name) as f:
+
+if len(sys.argv) > 1:
+    filename = sys.argv[1]
+else:
+    filename = input('File name: ')
+
+with open(filename) as f:
     for c in f.read():
         if c in ['<', '>', '+', '-', ',', '.', '[', ']']:
             code += c
